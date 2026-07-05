@@ -1,0 +1,43 @@
+server:
+  port: ${JAVA_PORT:8080}
+
+spring:
+  application:
+    name: moodscript-api
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:moodscript}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:moodscript-super-secret-change-me-to-a-long-random-string-1234567890}
+    expires-minutes: ${JWT_EXPIRES_MINUTES:1440}
+  flask:
+    url: ${FLASK_URL:http://localhost:8000}
+  ollama:
+    url: ${OLLAMA_URL:http://localhost:11434}
+    embed-model: ${OLLAMA_EMBED_MODEL:nomic-embed-text}
+  cors:
+    origins: ${CORS_ORIGINS:http://localhost:5173}
+
+logging:
+  level:
+    org.springframework.security: INFO
+    com.moodscript: INFO

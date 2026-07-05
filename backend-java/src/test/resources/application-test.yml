@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:moodscript;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+
+app:
+  jwt:
+    secret: test-secret-test-secret-test-secret-test-secret-1234567890
+    expires-minutes: 60
+  flask:
+    url: http://localhost:9999
+  ollama:
+    url: http://localhost:9998
+    embed-model: nomic-embed-text
+  cors:
+    origins: http://localhost:5173

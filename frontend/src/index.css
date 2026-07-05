@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme tokens ──────────────────────────────────────────────
+   Light = warm "paper" (default). Dark = deep "ink" (under .dark).
+   Values are space-separated RGB channels so Tailwind's <alpha-value>
+   works (e.g. text-ink/70, border-rule/15).                        */
+:root {
+  --paper: 246 243 236; /* #F6F3EC */
+  --paper-raised: 251 249 244; /* #FBF9F4 */
+  --paper-sunk: 238 233 222; /* #EEE9DE */
+  --ink: 27 24 21; /* #1B1815 */
+  --ink-soft: 74 69 61; /* #4A453D */
+  --ink-muted: 138 131 119; /* #8A8377 */
+  --accent: 180 73 31; /* #B4491F terracotta */
+  --rule: 27 24 21;
+  color-scheme: light;
+}
+
+.dark {
+  --paper: 20 18 14; /* #14120E */
+  --paper-raised: 28 26 21; /* #1C1A15 */
+  --paper-sunk: 15 13 10; /* #0F0D0A */
+  --ink: 239 234 224; /* #EFEAE0 */
+  --ink-soft: 183 176 163; /* #B7B0A3 */
+  --ink-muted: 141 134 121; /* #8D8679 */
+  --accent: 224 162 74; /* #E0A24A amber */
+  --rule: 239 234 224;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+  overflow-x: hidden;
+}
+
+/* Fraunces looks its best with old-style figures + a touch of its soft axis */
+.font-display {
+  font-optical-sizing: auto;
+  font-feature-settings: "ss01";
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.22);
+}
+
+@layer components {
+  /* mono kicker/eyebrow — the signature editorial label */
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted;
+  }
+
+  /* hairline rule */
+  .rule {
+    @apply border-0 border-t border-rule/15;
+  }
+
+  /* bordered editorial block (replaces the old glass card) */
+  .panel {
+    @apply border border-rule/15 bg-paper-raised;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 text-sm font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  /* solid ink block, inverts to accent on hover — bold and typographic */
+  .btn-primary {
+    @apply btn bg-ink px-5 py-2.5 text-paper hover:bg-accent active:translate-y-px;
+  }
+  .btn-accent {
+    @apply btn bg-accent px-5 py-2.5 text-paper hover:brightness-110 active:translate-y-px;
+  }
+  .btn-ghost {
+    @apply btn border border-rule/25 px-5 py-2.5 text-ink hover:border-ink hover:bg-ink/[0.03] active:translate-y-px;
+  }
+
+  /* underline field for single-line inputs & search */
+  .input {
+    @apply w-full border-0 border-b border-rule/25 bg-transparent px-0 py-2.5 text-ink outline-none transition placeholder:text-ink-muted focus:border-ink;
+  }
+  /* boxed field for text areas that need a frame */
+  .field {
+    @apply w-full border border-rule/20 bg-paper-raised px-4 py-3 text-ink outline-none transition placeholder:text-ink-muted focus:border-ink;
+  }
+  .label {
+    @apply mb-1.5 block font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted;
+  }
+
+  /* animated-underline text link */
+  .link-underline {
+    @apply inline-flex items-center gap-1.5 text-ink underline decoration-rule/40 decoration-1 underline-offset-4 transition hover:text-accent hover:decoration-accent;
+  }
+}
+
+/* recharts fallback tooltip (charts pass custom tooltips, this is a safety net) */
+.recharts-default-tooltip {
+  border-radius: 0 !important;
+  border: 1px solid rgb(var(--rule) / 0.18) !important;
+  background: rgb(var(--paper-raised)) !important;
+  color: rgb(var(--ink)) !important;
+}
+
+/* thin, square scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--ink) / 0.16);
+  border-radius: 0;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
