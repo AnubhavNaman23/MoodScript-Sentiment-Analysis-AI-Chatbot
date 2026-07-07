@@ -50,16 +50,6 @@ MoodScript is a personal journal where the app *understands* how you feel and re
 | 🎨 **Editorial-Ink UI** | A typography-led "paper & ink" design system — Fraunces display serif, Space Mono labels, hairline rules, numbered sections and one warm terracotta/amber accent. Light "paper" and dark "ink" themes from the same tokens; no gradients or blur. |
 | 🔐 **Auth** | JWT (HS512) registration/login, BCrypt‑hashed passwords, stateless APIs. |
 
-### Resume‑point mapping
-
-> *DeepMind Journal – Blog Sentiment Analysis & Rant AI*
-
-- ✅ *"Spring Boot backend with RESTful APIs for journal management, authentication, and mood tracking"* → `backend-java/`
-- ✅ *"Normalized PostgreSQL schema supporting 500+ journal entries with efficient CRUD"* → `V1__init.sql` + `DataSeeder` (520 entries)
-- ✅ *"Integrated Java backend services with React and LLM models — scalable, distributed architecture"* → this whole repo
-- ✅ *"Sentiment analysis on user entries"* → Flask + HuggingFace transformers
-- ✅ *"Rant AI, an empathetic chatbot using fine‑tuned transformer models"* → Ollama `rant-ai` persona + RAG
-
 ---
 
 ## 📸 Screenshots
