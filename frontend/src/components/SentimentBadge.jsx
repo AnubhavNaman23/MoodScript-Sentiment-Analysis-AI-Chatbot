@@ -1,11 +1,10 @@
-import type { Sentiment } from "../lib/types";
 import { SENTIMENT_COLORS, moodColor } from "../lib/moodColors";
 
 /**
  * Editorial sentiment tag — a small square color tick + a mono label (identity is
  * never carried by color alone). The primary emotion trails as a muted mono note.
  */
-export function SentimentBadge({ sentiment }: { sentiment: Sentiment | null }) {
+export function SentimentBadge({ sentiment }) {
   if (!sentiment) {
     return <span className="eyebrow text-ink-muted">analyzing…</span>;
   }

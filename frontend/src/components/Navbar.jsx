@@ -11,7 +11,7 @@ const links = [
   { to: "/app/insights", label: "Insights", end: false },
 ];
 
-function linkClass({ isActive }: { isActive: boolean }) {
+function linkClass({ isActive }) {
   return [
     "relative py-1 font-mono text-[11px] uppercase tracking-[0.18em] transition",
     isActive ? "text-ink" : "text-ink-muted hover:text-ink",

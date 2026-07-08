@@ -1,4 +1,4 @@
-export function Loader({ label }: { label?: string }) {
+export function Loader({ label }) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-20">
       <div className="relative h-px w-44 overflow-hidden bg-rule/20">

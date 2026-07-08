@@ -5,17 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
  * magazine sets a pull-statistic. Meant to sit inside a ruled grid (see Insights /
  * Dashboard), so it carries no border of its own.
  */
-export function StatTile({
-  label,
-  value,
-  sub,
-  delay = 0,
-}: {
-  label: string;
-  value: string | number;
-  sub?: string;
-  delay?: number;
-}) {
+export function StatTile({ label, value, sub, delay = 0 }) {
   const reduce = useReducedMotion();
   return (
     <motion.div

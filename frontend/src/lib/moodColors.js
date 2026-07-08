@@ -8,7 +8,7 @@
 // palette validator: CVD separation worst-adjacent ΔE 16.6 (target ≥12), lightness
 // band + contrast all PASS. "neutral" is intentionally gray (a neutral mood should
 // read gray) and, like every mood here, is always rendered beside a text label.
-export const MOOD_COLORS: Record<string, string> = {
+export const MOOD_COLORS = {
   joyful: "#C77A00",
   positive: "#2F9E67",
   calm: "#0C97B2",
@@ -21,11 +21,11 @@ export const MOOD_COLORS: Record<string, string> = {
   disgusted: "#6F8B2E",
 };
 
-export function moodColor(label?: string | null): string {
+export function moodColor(label) {
   return MOOD_COLORS[(label || "neutral").toLowerCase()] || "#8A8377";
 }
 
-const MOOD_EMOJI: Record<string, string> = {
+const MOOD_EMOJI = {
   joyful: "😊",
   positive: "🙂",
   calm: "😌",
@@ -38,7 +38,7 @@ const MOOD_EMOJI: Record<string, string> = {
   disgusted: "😖",
 };
 
-export function moodEmoji(label?: string | null): string {
+export function moodEmoji(label) {
   return MOOD_EMOJI[(label || "neutral").toLowerCase()] || "😐";
 }
 
@@ -47,14 +47,14 @@ export const CHART_ACCENT = "#B4491F";
 export const CHART_ACCENT_SOFT = "#2B8C9E";
 
 // Semantic, always-labeled trio for sentiment polarity — retuned for paper/ink.
-export const SENTIMENT_COLORS: Record<string, string> = {
+export const SENTIMENT_COLORS = {
   positive: "#2F9E67",
   neutral: "#8A8377",
   negative: "#C4432B",
 };
 
 /** Theme-aware palette for Recharts (colors can't read CSS vars, so we branch on theme). */
-export function chartTheme(dark: boolean) {
+export function chartTheme(dark) {
   return {
     accent: dark ? "#E0A24A" : "#B4491F",
     grid: dark ? "rgba(239,234,224,0.10)" : "rgba(27,24,21,0.10)",
@@ -67,6 +67,6 @@ export function chartTheme(dark: boolean) {
   };
 }
 
-export function titleCase(s: string): string {
+export function titleCase(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }

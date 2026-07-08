@@ -70,8 +70,9 @@ must be the real password for the `postgres` user (set at install). Nothing else
   `resources/application.yml`; `resources/db/migration/V1__init.sql`.
 - **Flask** — `ml-sentiment/models.py` (2 HF pipelines), `app.py` (`/analyze`, `/health`).
 - **Gateway** — `ai-gateway/src/{index.js (SSE), auth.js (JWT), rag.js (prompt build), ollama.js (stream), config.js}`.
-- **Frontend** — `frontend/src/lib/{api.ts,types.ts,moodColors.ts,format.ts}`, `store/{auth,theme}.ts`,
-  `components/*` (+ `charts/*`), `pages/{Landing,Login,Register,Dashboard,Journal,EntryDetail,Chat,Insights}.tsx`.
+- **Frontend** — plain JavaScript (no TypeScript): `frontend/src/lib/{api.js,moodColors.js,format.js}`,
+  `store/{auth,theme}.js`, `components/*.jsx` (+ `charts/*.jsx`),
+  `pages/{Landing,Login,Register,Dashboard,Journal,EntryDetail,Chat,Insights}.jsx`.
 - **Config/scripts** — `.env.example`, `scripts/{_env,setup,dev,seed}.ps1`, `ollama/Modelfile`.
 
 ## Architecture in one line

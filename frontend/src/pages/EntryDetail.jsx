@@ -8,12 +8,11 @@ import { Eyebrow } from "../components/editorial";
 import { EmotionRadarChart } from "../components/charts/EmotionRadarChart";
 import { SENTIMENT_COLORS } from "../lib/moodColors";
 import { fmtLongDate } from "../lib/format";
-import type { Entry } from "../lib/types";
 
 export default function EntryDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [entry, setEntry] = useState<Entry | null>(null);
+  const [entry, setEntry] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState("");
@@ -24,7 +23,7 @@ export default function EntryDetail() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.get<Entry>(`/api/entries/${id}`);
+        const { data } = await api.get(`/api/entries/${id}`);
         setEntry(data);
         setTitle(data.title);
         setBody(data.body);
@@ -39,7 +38,7 @@ export default function EntryDetail() {
   const save = async () => {
     setSaving(true);
     try {
-      const { data } = await api.put<Entry>(`/api/entries/${id}`, { title, body });
+      const { data } = await api.put(`/api/entries/${id}`, { title, body });
       setEntry(data);
       setEditing(false);
     } catch (e) {

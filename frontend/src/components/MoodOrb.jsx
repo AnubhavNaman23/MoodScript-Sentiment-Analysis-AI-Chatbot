@@ -4,7 +4,7 @@ import { moodColor, titleCase } from "../lib/moodColors";
  * Today's mood, set typographically — a large Fraunces mood word with a small color
  * dot for identity and the valence in mono. Replaces the old glowing gradient orb.
  */
-export function MoodOrb({ mood, score }: { mood: string; score: number; size?: number }) {
+export function MoodOrb({ mood, score }) {
   const color = moodColor(mood);
   return (
     <div>

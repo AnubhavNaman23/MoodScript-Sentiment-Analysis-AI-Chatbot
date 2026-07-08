@@ -3,13 +3,7 @@ import { chartTheme, titleCase } from "../../lib/moodColors";
 import { useTheme } from "../../store/theme";
 
 /** Single-series emotion distribution — one accent hue fill, categories on the axis. */
-export function EmotionRadarChart({
-  distribution,
-  height = 260,
-}: {
-  distribution: Record<string, number>;
-  height?: number;
-}) {
+export function EmotionRadarChart({ distribution, height = 260 }) {
   const dark = useTheme((s) => s.dark);
   const c = chartTheme(dark);
 
@@ -41,7 +35,7 @@ export function EmotionRadarChart({
   );
 }
 
-function RadarTip({ active, payload, c }: any) {
+function RadarTip({ active, payload, c }) {
   if (!active || !payload?.length) return null;
   const p = payload[0].payload;
   return (

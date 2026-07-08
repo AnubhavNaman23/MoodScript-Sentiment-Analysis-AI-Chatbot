@@ -6,12 +6,11 @@ import { EntryCard } from "../components/EntryCard";
 import { SentimentBadge } from "../components/SentimentBadge";
 import { Loader } from "../components/Loader";
 import { Eyebrow } from "../components/editorial";
-import type { Entry, EntryPage, SearchHit } from "../lib/types";
 
 const PAGE_SIZE = 10;
 
 export default function Journal() {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const [entries, setEntries] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -21,14 +20,14 @@ export default function Journal() {
   const [body, setBody] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
-  const [justSaved, setJustSaved] = useState<Entry | null>(null);
+  const [justSaved, setJustSaved] = useState(null);
 
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
-  const [results, setResults] = useState<SearchHit[] | null>(null);
+  const [results, setResults] = useState(null);
 
-  const loadPage = async (p: number) => {
-    const { data } = await api.get<EntryPage>(`/api/entries?page=${p}&size=${PAGE_SIZE}`);
+  const loadPage = async (p) => {
+    const { data } = await api.get(`/api/entries?page=${p}&size=${PAGE_SIZE}`);
     setTotal(data.total);
     setEntries((prev) => (p === 0 ? data.items : [...prev, ...data.items]));
   };
@@ -37,13 +36,13 @@ export default function Journal() {
     loadPage(0).finally(() => setLoading(false));
   }, []);
 
-  const save = async (e: React.FormEvent) => {
+  const save = async (e) => {
     e.preventDefault();
     if (!title.trim() || !body.trim()) return;
     setSaving(true);
     setSaveError("");
     try {
-      const { data } = await api.post<Entry>("/api/entries", { title, body });
+      const { data } = await api.post("/api/entries", { title, body });
       setEntries((prev) => [data, ...prev]);
       setTotal((t) => t + 1);
       setJustSaved(data);
@@ -57,12 +56,12 @@ export default function Journal() {
     }
   };
 
-  const runSearch = async (e: React.FormEvent) => {
+  const runSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
     setSearching(true);
     try {
-      const { data } = await api.get<SearchHit[]>(`/api/entries/search?q=${encodeURIComponent(query)}`);
+      const { data } = await api.get(`/api/entries/search?q=${encodeURIComponent(query)}`);
       setResults(data);
     } catch {
       setResults([]);

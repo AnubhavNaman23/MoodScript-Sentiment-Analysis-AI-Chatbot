@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import type { Entry } from "../lib/types";
 import { moodColor, titleCase } from "../lib/moodColors";
 import { relativeTime } from "../lib/format";
 
@@ -9,17 +8,7 @@ import { relativeTime } from "../lib/format";
  * a mono index number, a Fraunces title, a one-line excerpt, and a mono meta line
  * (mood dot + label + relative time). Meant to live inside a `divide-y` list.
  */
-export function EntryCard({
-  entry,
-  index = 0,
-  delay = 0,
-  score,
-}: {
-  entry: Entry;
-  index?: number;
-  delay?: number;
-  score?: number;
-}) {
+export function EntryCard({ entry, index = 0, delay = 0, score }) {
   const reduce = useReducedMotion();
   const mood = entry.sentiment?.moodLabel || "neutral";
   const color = moodColor(mood);

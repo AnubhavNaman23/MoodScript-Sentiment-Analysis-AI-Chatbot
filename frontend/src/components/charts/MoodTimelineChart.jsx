@@ -1,11 +1,10 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { MoodPoint } from "../../lib/types";
 import { chartTheme, titleCase } from "../../lib/moodColors";
 import { useTheme } from "../../store/theme";
 import { fmtDate } from "../../lib/format";
 
 /** Single-series mood valence over time — one accent hue, no legend (title names it). */
-export function MoodTimelineChart({ data, height = 240 }: { data: MoodPoint[]; height?: number }) {
+export function MoodTimelineChart({ data, height = 240 }) {
   const dark = useTheme((s) => s.dark);
   const c = chartTheme(dark);
 
@@ -47,9 +46,9 @@ export function MoodTimelineChart({ data, height = 240 }: { data: MoodPoint[]; h
   );
 }
 
-function MoodTooltip({ active, payload, label, c }: any) {
+function MoodTooltip({ active, payload, label, c }) {
   if (!active || !payload?.length) return null;
-  const p = payload[0].payload as MoodPoint;
+  const p = payload[0].payload;
   return (
     <div
       className="px-3 py-2 font-mono text-[11px]"

@@ -4,7 +4,7 @@ import { SENTIMENT_COLORS, titleCase } from "../../lib/moodColors";
  * Sentiment polarity — a semantic, always-labeled trio (positive/neutral/negative)
  * as a single proportion bar (2px surface gaps between fills) plus a labeled legend.
  */
-export function SentimentSplit({ distribution }: { distribution: Record<string, number> }) {
+export function SentimentSplit({ distribution }) {
   const order = ["positive", "neutral", "negative"];
   const total = order.reduce((s, k) => s + (distribution[k] || 0), 0) || 1;
 

@@ -1,11 +1,10 @@
 import { motion, useReducedMotion } from "framer-motion";
-import type { ChatMessage } from "../lib/types";
 
 /**
  * Chat as typeset correspondence, not bubbles: a mono speaker label over a hairline,
  * then the message. Rant AI answers in Fraunces (a literary voice); you speak in sans.
  */
-export function ChatBubble({ message }: { message: Pick<ChatMessage, "role" | "content"> }) {
+export function ChatBubble({ message }) {
   const reduce = useReducedMotion();
   const isUser = message.role === "user";
   return (

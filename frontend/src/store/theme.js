@@ -1,12 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface ThemeState {
-  dark: boolean;
-  toggle: () => void;
-}
-
-export const useTheme = create<ThemeState>()(
+export const useTheme = create(
   persist(
     (set) => ({
       dark: false,
@@ -17,12 +12,7 @@ export const useTheme = create<ThemeState>()(
 );
 
 /** Drives the subtle mood accent (dot/hairline) from the user's current mood color. */
-interface MoodTintState {
-  color: string | null;
-  setTint: (color: string | null) => void;
-}
-
-export const useMoodTint = create<MoodTintState>((set) => ({
+export const useMoodTint = create((set) => ({
   color: null,
   setTint: (color) => set({ color }),
 }));

@@ -1,9 +1,9 @@
-export function fmtDate(iso: string): string {
+export function fmtDate(iso) {
   const d = typeof iso === "string" && iso.length === 10 ? new Date(iso + "T00:00:00") : new Date(iso);
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-export function fmtLongDate(iso: string): string {
+export function fmtLongDate(iso) {
   return new Date(iso).toLocaleDateString(undefined, {
     weekday: "long",
     month: "long",
@@ -12,7 +12,7 @@ export function fmtLongDate(iso: string): string {
   });
 }
 
-export function relativeTime(iso: string): string {
+export function relativeTime(iso) {
   const then = new Date(iso).getTime();
   const diff = Date.now() - then;
   const mins = Math.round(diff / 60000);
@@ -25,7 +25,7 @@ export function relativeTime(iso: string): string {
   return fmtDate(iso);
 }
 
-export function greeting(): string {
+export function greeting() {
   const h = new Date().getHours();
   if (h < 12) return "Good morning";
   if (h < 18) return "Good afternoon";

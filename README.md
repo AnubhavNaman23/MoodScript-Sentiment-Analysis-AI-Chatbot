@@ -33,6 +33,7 @@ Built as a **polyglot, distributed, full‑stack system** with live local models
 12. [Project layout](#-project-layout)
 13. [Design decisions](#-design-decisions)
 14. [Roadmap / whats left](#-roadmap--whats-left)
+15. [Contributors](#-contributors)
 
 ---
 
@@ -136,7 +137,7 @@ score=0.765  #307  "Anxious again"
 
 | Layer | Technology | Responsibility |
 |------|------------|----------------|
-| **Frontend** | React 18 + Vite + TypeScript, TailwindCSS, Framer Motion, Recharts, Zustand | Editorial-Ink UI, dashboards, streaming chat, charts |
+| **Frontend** | React 18 + Vite (JavaScript), TailwindCSS, Framer Motion, Recharts, Zustand | Editorial-Ink UI, dashboards, streaming chat, charts |
 | **Core API** | Java 21 + Spring Boot 3.3, Spring Security, JPA/Hibernate, Flyway | JWT auth, journal CRUD, mood, stats, RAG, chat persistence — **owns PostgreSQL** |
 | **Sentiment ML** | Python 3.13 + Flask + Hugging Face Transformers + PyTorch | `POST /analyze` → sentiment + emotion |
 | **AI Gateway** | Node.js + Express | SSE streaming of Rant AI from Ollama, RAG assembly, persistence |
@@ -205,6 +206,47 @@ Each unit has one job, a clear interface, and can be tested in isolation.
 **Shared contract:** one HMAC `JWT_SECRET` in `.env`, so the Node gateway can verify the exact tokens the
 Java backend issues. The gateway forwards the user's JWT to Java for RAG + persistence, so the database is
 only ever reached through Java's authenticated endpoints.
+
+### System layers
+
+The same system, read top-down instead of left-right — what each layer is responsible for and what it's
+forbidden from touching:
+
+```mermaid
+flowchart TD
+    subgraph L1["Presentation layer"]
+        direction LR
+        A1["React SPA · Editorial-Ink UI"]
+        A2["Zustand stores (auth, theme, mood tint)"]
+    end
+
+    subgraph L2["API / gateway layer"]
+        direction LR
+        B1["Java Spring Boot — REST + JWT auth"]
+        B2["Node Express — SSE chat gateway"]
+    end
+
+    subgraph L3["Service / intelligence layer"]
+        direction LR
+        C1["Flask — RoBERTa sentiment + DistilRoBERTa emotion"]
+        C2["Ollama — rant-ai chat + nomic-embed-text"]
+    end
+
+    subgraph L4["Data layer"]
+        direction LR
+        D1[("PostgreSQL 18 — users, entries, moods, chat, embeddings")]
+    end
+
+    L1 -->|"REST + JWT / SSE"| L2
+    L2 -->|"/analyze, /api/embeddings, /api/chat"| L3
+    B1 -->|"sole owner — reads & writes"| L4
+    B2 -.->|"no direct access — always via Java"| L4
+
+    style L4 fill:#2B2620,stroke:#B4491F,color:#EFEAE0
+```
+
+Two rules fall out of this picture: **only Java touches PostgreSQL**, and **only the gateway speaks SSE
+to the browser** — every other cross-layer call is a plain synchronous REST request.
 
 ---
 
@@ -438,7 +480,7 @@ primary_emotion, emotion_scores, model_name }`.
 cd backend-java;  .\mvnw.cmd test                    # JUnit — auth flow, mood mapping, cosine  (9 pass)
 cd ml-sentiment;  .venv\Scripts\python -m pytest     # Flask routes                             (2 pass)
 cd ai-gateway;    npm test                           # gateway — RAG prompt build, JWT verify   (4 pass)
-cd frontend;      npm run build                      # type/compile check                       (clean)
+cd frontend;      npm run build                      # production build (plain JS/JSX)          (clean)
 ```
 
 Current status: **15 automated tests passing** across the stack; the AI streaming path
@@ -461,8 +503,12 @@ MoodScript/
 │   └─ src/main/resources/  application.yml · db/migration/V1__init.sql
 ├─ ml-sentiment/       Flask + HuggingFace (models.py, app.py, test_app.py)
 ├─ ai-gateway/         Node/Express SSE gateway (src/*.js, test/)
-└─ frontend/           React + Vite Editorial-Ink UI (src/{pages,components,charts,lib,store})
+└─ frontend/           React + Vite Editorial-Ink UI, plain JavaScript
+    └─ src/{pages,components,charts,lib,store}/*.jsx · *.js
 ```
+
+No TypeScript anywhere in the stack — the frontend is plain JavaScript (`.js`/`.jsx`), Vite + Babel handle
+JSX directly, and `tailwind.config.js` scans `.js`/`.jsx` sources.
 
 ---
 
@@ -496,6 +542,16 @@ MoodScript/
   QA-verified end to end. See **`HANDOFF.md`** for the exact run commands.
 - Future ideas: native `pgvector` index for scale, real LoRA fine‑tune of Rant AI, weekly mood email
   digests, export to Markdown, mobile PWA.
+
+---
+
+## 👤 Contributors
+
+| | |
+|---|---|
+| **Anubhav Naman** | Designed and built the entire system — Java Spring Boot core API, Flask sentiment/emotion ML service, Node SSE gateway, Ollama Rant AI persona + RAG pipeline, PostgreSQL schema, and the React "Editorial Ink" frontend. |
+
+[github.com/AnubhavNaman23](https://github.com/AnubhavNaman23)
 
 ---
 

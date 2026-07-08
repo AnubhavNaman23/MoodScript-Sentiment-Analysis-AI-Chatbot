@@ -14,14 +14,13 @@ import { Eyebrow, SectionMarker } from "../components/editorial";
 import { MoodTimelineChart } from "../components/charts/MoodTimelineChart";
 import { EmotionRadarChart } from "../components/charts/EmotionRadarChart";
 import { SentimentSplit } from "../components/charts/SentimentSplit";
-import type { Stats, MoodSummary, Entry, EntryPage } from "../lib/types";
 
 export default function Dashboard() {
   const user = useAuth((s) => s.user);
   const setTint = useMoodTint((s) => s.setTint);
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [mood, setMood] = useState<MoodSummary | null>(null);
-  const [recent, setRecent] = useState<Entry[]>([]);
+  const [stats, setStats] = useState(null);
+  const [mood, setMood] = useState(null);
+  const [recent, setRecent] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,9 +28,9 @@ export default function Dashboard() {
     (async () => {
       try {
         const [s, m, e] = await Promise.all([
-          api.get<Stats>("/api/stats"),
-          api.get<MoodSummary>("/api/moods/summary"),
-          api.get<EntryPage>("/api/entries?page=0&size=5"),
+          api.get("/api/stats"),
+          api.get("/api/moods/summary"),
+          api.get("/api/entries?page=0&size=5"),
         ]);
         if (!active) return;
         setStats(s.data);

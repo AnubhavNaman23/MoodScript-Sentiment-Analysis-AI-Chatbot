@@ -5,9 +5,6 @@ import { useAuth } from "../store/auth";
 import { ChatBubble } from "../components/ChatBubble";
 import { TypingDots } from "../components/Loader";
 import { Eyebrow } from "../components/editorial";
-import type { ChatSession, ChatMessage } from "../lib/types";
-
-type LocalMsg = Pick<ChatMessage, "role" | "content">;
 
 const STARTERS = [
   "I've had a really long, draining week.",
@@ -18,15 +15,15 @@ const STARTERS = [
 
 export default function Chat() {
   const token = useAuth((s) => s.token);
-  const [sessions, setSessions] = useState<ChatSession[]>([]);
-  const [activeId, setActiveId] = useState<number | null>(null);
-  const [messages, setMessages] = useState<LocalMsg[]>([]);
+  const [sessions, setSessions] = useState([]);
+  const [activeId, setActiveId] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    api.get<ChatSession[]>("/api/chat/sessions").then(({ data }) => {
+    api.get("/api/chat/sessions").then(({ data }) => {
       setSessions(data);
       if (data.length) selectSession(data[0].id);
     });
@@ -36,20 +33,20 @@ export default function Chat() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const selectSession = async (id: number) => {
+  const selectSession = async (id) => {
     setActiveId(id);
-    const { data } = await api.get<ChatMessage[]>(`/api/chat/sessions/${id}/messages`);
+    const { data } = await api.get(`/api/chat/sessions/${id}/messages`);
     setMessages(data.map((m) => ({ role: m.role, content: m.content })));
   };
 
   const newChat = async () => {
-    const { data } = await api.post<ChatSession>("/api/chat/sessions", {});
+    const { data } = await api.post("/api/chat/sessions", {});
     setSessions((prev) => [data, ...prev]);
     setActiveId(data.id);
     setMessages([]);
   };
 
-  const deleteChat = async (id: number, e: React.MouseEvent) => {
+  const deleteChat = async (id, e) => {
     e.stopPropagation();
     await api.delete(`/api/chat/sessions/${id}`);
     setSessions((prev) => prev.filter((s) => s.id !== id));
@@ -59,13 +56,13 @@ export default function Chat() {
     }
   };
 
-  const send = async (text: string) => {
+  const send = async (text) => {
     const message = text.trim();
     if (!message || streaming) return;
 
     let sessionId = activeId;
     if (!sessionId) {
-      const { data } = await api.post<ChatSession>("/api/chat/sessions", {});
+      const { data } = await api.post("/api/chat/sessions", {});
       sessionId = data.id;
       setSessions((prev) => [data, ...prev]);
       setActiveId(data.id);
@@ -77,7 +74,7 @@ export default function Chat() {
 
     try {
       await streamChat(
-        token!,
+        token,
         sessionId,
         message,
         (tok) => setMessages((prev) => updateLast(prev, (m) => ({ ...m, content: m.content + tok }))),
@@ -90,7 +87,7 @@ export default function Chat() {
   };
 
   const refreshSessions = () => {
-    api.get<ChatSession[]>("/api/chat/sessions").then(({ data }) => setSessions(data));
+    api.get("/api/chat/sessions").then(({ data }) => setSessions(data));
   };
 
   return (
@@ -196,7 +193,7 @@ export default function Chat() {
   );
 }
 
-function updateLast(list: LocalMsg[], fn: (m: LocalMsg) => LocalMsg): LocalMsg[] {
+function updateLast(list, fn) {
   if (!list.length) return list;
   const copy = list.slice();
   copy[copy.length - 1] = fn(copy[copy.length - 1]);
@@ -204,15 +201,8 @@ function updateLast(list: LocalMsg[], fn: (m: LocalMsg) => LocalMsg): LocalMsg[]
 }
 
 /** Streams SSE tokens from the Node gateway. */
-async function streamChat(
-  token: string,
-  sessionId: number,
-  message: string,
-  onToken: (t: string) => void,
-  onDone: (full: string) => void,
-  onError: (msg: string) => void
-) {
-  let res: Response;
+async function streamChat(token, sessionId, message, onToken, onDone, onError) {
+  let res;
   try {
     res = await fetch(`${GATEWAY_URL}/api/chat/stream`, {
       method: "POST",

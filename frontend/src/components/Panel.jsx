@@ -1,19 +1,10 @@
 import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
 
 /**
  * The editorial replacement for the old glass card: a hairline-bordered block on
  * the raised paper surface (no blur, no shadow-glow). Reveals gently on scroll.
  */
-export function Panel({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+export function Panel({ children, className = "", delay = 0 }) {
   const reduce = useReducedMotion();
   return (
     <motion.div

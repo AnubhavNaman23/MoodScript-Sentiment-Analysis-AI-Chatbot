@@ -8,21 +8,20 @@ import { MoodTimelineChart } from "../components/charts/MoodTimelineChart";
 import { EmotionRadarChart } from "../components/charts/EmotionRadarChart";
 import { SentimentSplit } from "../components/charts/SentimentSplit";
 import { moodColor, titleCase } from "../lib/moodColors";
-import type { Stats, MoodSummary, MoodPoint } from "../lib/types";
 
 export default function Insights() {
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [summary, setSummary] = useState<MoodSummary | null>(null);
-  const [timeline, setTimeline] = useState<MoodPoint[]>([]);
+  const [stats, setStats] = useState(null);
+  const [summary, setSummary] = useState(null);
+  const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         const [s, m, t] = await Promise.all([
-          api.get<Stats>("/api/stats"),
-          api.get<MoodSummary>("/api/moods/summary"),
-          api.get<MoodPoint[]>("/api/moods/timeline"),
+          api.get("/api/stats"),
+          api.get("/api/moods/summary"),
+          api.get("/api/moods/timeline"),
         ]);
         setStats(s.data);
         setSummary(m.data);

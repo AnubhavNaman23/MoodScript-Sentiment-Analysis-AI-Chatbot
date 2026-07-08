@@ -34,3 +34,4 @@ Thumbs.db
 # Local tooling (not part of the project)
 .claude/
 .github/modernize/
+.gstack/

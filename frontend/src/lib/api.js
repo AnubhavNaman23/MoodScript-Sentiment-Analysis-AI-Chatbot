@@ -25,7 +25,6 @@ api.interceptors.response.use(
 );
 
 /** Extracts a human-readable message from an axios error. */
-export function apiError(e: unknown, fallback = "Something went wrong."): string {
-  const anyE = e as { response?: { data?: { message?: string } }; message?: string };
-  return anyE?.response?.data?.message || anyE?.message || fallback;
+export function apiError(e, fallback = "Something went wrong.") {
+  return e?.response?.data?.message || e?.message || fallback;
 }
