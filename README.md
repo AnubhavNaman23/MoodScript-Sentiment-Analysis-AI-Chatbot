@@ -51,16 +51,6 @@ MoodScript is a personal journal where the app *understands* how you feel and re
 | 🎨 **Editorial-Ink UI** | A typography-led "paper & ink" design system — Fraunces display serif, Space Mono labels, hairline rules, numbered sections and one warm terracotta/amber accent. Light "paper" and dark "ink" themes from the same tokens; no gradients or blur. |
 | 🔐 **Auth** | JWT (HS512) registration/login, BCrypt‑hashed passwords, stateless APIs. |
 
-### Resume‑point mapping
-
-> *DeepMind Journal – Blog Sentiment Analysis & Rant AI*
-
-- ✅ *"Spring Boot backend with RESTful APIs for journal management, authentication, and mood tracking"* → `backend-java/`
-- ✅ *"Normalized PostgreSQL schema supporting 500+ journal entries with efficient CRUD"* → `V1__init.sql` + `DataSeeder` (520 entries)
-- ✅ *"Integrated Java backend services with React and LLM models — scalable, distributed architecture"* → this whole repo
-- ✅ *"Sentiment analysis on user entries"* → Flask + HuggingFace transformers
-- ✅ *"Rant AI, an empathetic chatbot using fine‑tuned transformer models"* → Ollama `rant-ai` persona + RAG
-
 ---
 
 ## 📸 Screenshots
@@ -492,7 +482,7 @@ Current status: **15 automated tests passing** across the stack; the AI streamin
 
 ```
 MoodScript/
-├─ README.md · HANDOFF.md · .env.example
+├─ README.md · .env.example
 ├─ scripts/            setup.ps1 · dev.ps1 · seed.ps1 · _env.ps1
 ├─ ollama/Modelfile    rant-ai empathetic persona (FROM phi3:mini)
 ├─ backend-java/       Spring Boot core API (Maven wrapper → local Maven)
@@ -539,7 +529,7 @@ JSX directly, and `tailwind.config.js` scans `.js`/`.jsx` sources.
 - ✅ **Live run — complete.** The full stack has been run against real **PostgreSQL 18**: the schema is
   Flyway-migrated, **520 entries** are seeded with real sentiment + embeddings, and the whole flow (login →
   live sentiment on new entries → mood timeline → semantic search → RAG-grounded Rant AI streaming) is
-  QA-verified end to end. See **`HANDOFF.md`** for the exact run commands.
+  QA-verified end to end. See [Setup, seed & run](#-setup-seed--run) for the exact commands.
 - Future ideas: native `pgvector` index for scale, real LoRA fine‑tune of Rant AI, weekly mood email
   digests, export to Markdown, mobile PWA.
 
